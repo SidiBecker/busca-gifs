@@ -5,8 +5,10 @@ import 'package:http/http.dart' as http;
 import 'package:share/share.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-const TRENDING_URL =
-    'https://api.giphy.com/v1/gifs/trending?api_key=paTrAWhCgD0PXwsZNmLQHAw8hhk9cOVQ&limit=25&rating=G';
+const LIMIT = 18; 
+
+ ///[en, pt, es, fr, id]
+const SEARCH_LANG = 'en';
 
 class Home extends StatefulWidget {
   @override
@@ -20,21 +22,32 @@ class _HomeState extends State<Home> {
   Future<Map> _getGifs() async {
     http.Response response;
 
+    String url = "";
+
     if (_search == null || _search.isEmpty) {
-      response = await http.get(TRENDING_URL);
+      url = _getUrl('trending', '&limit=$LIMIT&rating=G&offset=$_offset');
     } else {
-      response = await http.get(
-          'https://api.giphy.com/v1/gifs/search?api_key=paTrAWhCgD0PXwsZNmLQHAw8hhk9cOVQ&q=$_search&limit=19&offset=$_offset&rating=G&lang=pt');
+      url = _getUrl(
+          'search', '&q=$_search&limit=$LIMIT&offset=$_offset&rating=G&lang=$SEARCH_LANG');
     }
 
+    response = await http.get(url);
+
     return json.decode(response.body);
+  }
+
+  String _getUrl(String module, String queryParams) {
+    return 'https://api.giphy.com/v1/gifs/' +
+        module +
+        '?api_key=paTrAWhCgD0PXwsZNmLQHAw8hhk9cOVQ' +
+        queryParams;
   }
 
   @override
   void initState() {
     super.initState();
 
-    _getGifs().then((map) => print(map));
+    _getGifs();
   }
 
   @override
@@ -58,7 +71,6 @@ class _HomeState extends State<Home> {
               style: TextStyle(color: Colors.white, fontSize: 18.0),
               textAlign: TextAlign.center,
               onSubmitted: (value) {
-                print(value);
 
                 setState(() {
                   _search = value;
@@ -100,14 +112,6 @@ class _HomeState extends State<Home> {
     }
   }
 
-  int _getCount(List data) {
-    if (_search == null) {
-      return data.length;
-    } else {
-      return data.length + 1;
-    }
-  }
-
   Widget _createGifTable(context, snapshot) {
     List dados = snapshot.data["data"];
 
@@ -115,9 +119,9 @@ class _HomeState extends State<Home> {
         padding: EdgeInsets.all(10.0),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, crossAxisSpacing: 10.0, mainAxisSpacing: 10.0),
-        itemCount: _getCount(dados),
+        itemCount: dados.length,
         itemBuilder: (context, index) {
-          if (_search == null || index < dados.length) {
+          if (index < dados.length -1) {
             String url = dados[index]["images"]["fixed_height"]["url"];
 
             return GestureDetector(
@@ -155,7 +159,7 @@ class _HomeState extends State<Home> {
               ),
               onTap: () {
                 setState(() {
-                  _offset += 19;
+                  _offset += (LIMIT - 1);
                 });
               },
             );

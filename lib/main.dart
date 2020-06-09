@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:buscagifs/ui/home_page.dart';
-import 'package:buscagifs/ui/gif_page.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -16,5 +15,6 @@ void main() {
               OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
           hintStyle: TextStyle(color: Colors.white),
         )),
+    debugShowCheckedModeBanner: false,
   ));
 }
