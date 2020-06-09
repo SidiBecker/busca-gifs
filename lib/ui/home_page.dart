@@ -5,9 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:share/share.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-const LIMIT = 18; 
+const LIMIT = 18;
 
- ///[en, pt, es, fr, id]
+///[en, pt, es, fr, id]
 const SEARCH_LANG = 'en';
 
 class Home extends StatefulWidget {
@@ -27,8 +27,8 @@ class _HomeState extends State<Home> {
     if (_search == null || _search.isEmpty) {
       url = _getUrl('trending', '&limit=$LIMIT&rating=G&offset=$_offset');
     } else {
-      url = _getUrl(
-          'search', '&q=$_search&limit=$LIMIT&offset=$_offset&rating=G&lang=$SEARCH_LANG');
+      url = _getUrl('search',
+          '&q=$_search&limit=$LIMIT&offset=$_offset&rating=G&lang=$SEARCH_LANG');
     }
 
     response = await http.get(url);
@@ -71,12 +71,13 @@ class _HomeState extends State<Home> {
               style: TextStyle(color: Colors.white, fontSize: 18.0),
               textAlign: TextAlign.center,
               onSubmitted: (value) {
-
-                setState(() {
-                  _search = value;
-                });
-
-                _getGifs();
+                if (_search != value) {
+                  setState(() {
+                    _offset = 0;
+                    _search = value;
+                  });
+                  _getGifs();
+                }
               },
             ),
           ),
@@ -121,7 +122,7 @@ class _HomeState extends State<Home> {
             crossAxisCount: 2, crossAxisSpacing: 10.0, mainAxisSpacing: 10.0),
         itemCount: dados.length,
         itemBuilder: (context, index) {
-          if (index < dados.length -1) {
+          if (index < dados.length - 1) {
             String url = dados[index]["images"]["fixed_height"]["url"];
 
             return GestureDetector(
