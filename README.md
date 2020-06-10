@@ -12,5 +12,5 @@ Desenvolvido em flutter.
 ![alt text](https://github.com/SidiBecker/busca-gifs/blob/master/screenshots/2.png?raw=true "Pesquisando")
 ![alt text](https://github.com/SidiBecker/busca-gifs/blob/master/screenshots/3.png?raw=true "Filtro")
 ![alt text](https://github.com/SidiBecker/busca-gifs/blob/master/screenshots/4.png?raw=true "Detalhamento")
-![alt text](https://github.com/SidiBecker/busca-gifs/blob/master/screenshots/5.png?raw=true "Compartilhamento")
-![alt text](https://github.com/SidiBecker/busca-gifs/blob/master/screenshots/6.png?raw=true "Compartilhamento")
+![alt text](https://github.com/SidiBecker/busca-gifs/blob/master/screenshots/7.png?raw=true "Compartilhamento")
+![alt text](https://github.com/SidiBecker/busca-gifs/blob/master/screenshots/8.png?raw=true "Compartilhamento")
