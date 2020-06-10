@@ -10,6 +10,6 @@ class ShareUtil {
     var response = await request.close();
     Uint8List bytes = await consolidateHttpClientResponseBytes(response);
 
-    await Share.file(name, name + '.jpg', bytes, 'image/jpg');
+    await Share.file(name, name + '.gif', bytes, 'image/gif');
   }
 }
