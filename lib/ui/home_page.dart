@@ -2,8 +2,10 @@ import 'package:buscagifs/ui/gif_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:share/share.dart';
 import 'package:transparent_image/transparent_image.dart';
+
+import '../share.dart';
+import 'package:vibration/vibration.dart';
 
 const LIMIT = 18;
 
@@ -66,7 +68,7 @@ class _HomeState extends State<Home> {
             padding: EdgeInsets.all(10.0),
             child: TextField(
               decoration: InputDecoration(
-                  labelText: "Pesquisa",
+                  labelText: "Search",
                   labelStyle: TextStyle(color: Colors.white)),
               style: TextStyle(color: Colors.white, fontSize: 18.0),
               textAlign: TextAlign.center,
@@ -124,6 +126,7 @@ class _HomeState extends State<Home> {
         itemBuilder: (context, index) {
           if (index < dados.length - 1) {
             String url = dados[index]["images"]["fixed_height"]["url"];
+            String name = dados[index]["title"];
 
             return GestureDetector(
               child: FadeInImage.memoryNetwork(
@@ -138,8 +141,12 @@ class _HomeState extends State<Home> {
                     MaterialPageRoute(
                         builder: (context) => GifPage(dados[index])));
               },
-              onLongPress: () {
-                Share.share(url);
+              onLongPress: () async {
+                if (await Vibration.hasVibrator() &&
+                    await Vibration.hasCustomVibrationsSupport()) {
+                  Vibration.vibrate(duration: 50);
+                }
+                ShareUtil.shareFromURL(url, name);
               },
             );
           } else {
@@ -152,10 +159,6 @@ class _HomeState extends State<Home> {
                     size: 70.0,
                     color: Colors.white,
                   ),
-                  Text(
-                    "Carregar mais",
-                    style: TextStyle(color: Colors.white, fontSize: 22.0),
-                  )
                 ],
               ),
               onTap: () {

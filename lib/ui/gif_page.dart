@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:share/share.dart';
+import 'package:buscagifs/share.dart';
 
 class GifPage extends StatelessWidget {
   final Map _gifData;
@@ -9,20 +9,21 @@ class GifPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String url = _gifData["images"]["fixed_height"]["url"];
+    String name = _gifData["title"];
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text(
-          _gifData["title"],
+          name,
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: IconThemeData(color: Colors.white),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.share),
-            onPressed: () {
-              Share.share(url);
+            onPressed: () async {
+              await ShareUtil.shareFromURL(url, name);
             },
           )
         ],
